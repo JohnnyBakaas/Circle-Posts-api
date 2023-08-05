@@ -29,4 +29,3 @@
 * Put friends into groops
 * Posts vieweble by only your groops
 * Users who tag users outside of the circles sends request to post owner
-* 
