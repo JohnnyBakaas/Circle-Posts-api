@@ -1,6 +1,6 @@
 # social-media-clone-api
 
-Goals:
+## Goals:
 * Global posts
 * Frien posts
 * Circle posts
@@ -9,3 +9,5 @@ Goals:
 * Coment on post promitions by type
 * Reactions: like/dislike
 * Views: list users
+
+## Profile: 
