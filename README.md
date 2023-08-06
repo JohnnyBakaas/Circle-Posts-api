@@ -1,4 +1,4 @@
-# Circles-api
+# Circles
 
 ## Fetures:
 * Global posts
