@@ -4,9 +4,9 @@ const NavBar = () => {
   return (
     <aside className={styles.NavBar}>
       <p>Home</p>
-      <p>Seartch</p>
+      <p>Search</p>
       <p>Message</p>
-      <p>Friens</p>
+      <p>Friends</p>
     </aside>
   );
 };

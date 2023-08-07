@@ -2,22 +2,21 @@ import Post, { IPost } from "../post/Post";
 import styles from "./Posts.module.css";
 
 const Posts = () => {
-  const posts: Array<IPost> = [
+  const posts: IPost[] = [
     {
       avatar:
         "https://www.redwolf.in/image/catalog/stickers/woah-mama-sticker-india.jpg",
       displayName: "Jaa9 Bravo",
       handle: "Meg",
-      folowers: 69,
+      followers: 69,
       content:
         "En veldig spennende post om fordelne med Rust over alle andre språk og en vits om java script. Rust BTW!",
-      coments: 2,
-      likes: 100000,
+      comments: 2,
+      likes: 1233000,
       disLikes: 0,
       views: 102,
-
       you: true,
-      folowing: true,
+      following: true,
       liked: false,
       disLiked: true,
     },
@@ -26,16 +25,14 @@ const Posts = () => {
         "https://www.redwolf.in/image/catalog/stickers/woah-mama-sticker-india.jpg",
       displayName: "Jaa9 Bravo",
       handle: "Meg",
-      folowers: 69,
-      content:
-        "En veldig spennende post om fordelne med Rust over alle andre språk og en vits om java script. Rust BTW!",
-      coments: 2,
+      followers: 69,
+      content: "JS er kult",
+      comments: 2,
       likes: 100,
       disLikes: 0,
       views: 102,
-
       you: true,
-      folowing: true,
+      following: true,
       liked: false,
       disLiked: true,
     },
@@ -44,16 +41,15 @@ const Posts = () => {
         "https://www.redwolf.in/image/catalog/stickers/woah-mama-sticker-india.jpg",
       displayName: "Jaa9 Bravo",
       handle: "Meg",
-      folowers: 69,
+      followers: 69,
       content:
         "En veldig spennende post om fordelne med Rust over alle andre språk og en vits om java script. Rust BTW!",
-      coments: 2,
+      comments: 2,
       likes: 100,
       disLikes: 0,
       views: 102,
-
       you: true,
-      folowing: true,
+      following: true,
       liked: false,
       disLiked: true,
     },
@@ -62,16 +58,15 @@ const Posts = () => {
         "https://www.redwolf.in/image/catalog/stickers/woah-mama-sticker-india.jpg",
       displayName: "Jaa9 Bravo",
       handle: "Meg",
-      folowers: 69,
+      followers: 69,
       content:
         "En veldig spennende post om fordelne med Rust over alle andre språk og en vits om java script. Rust BTW!",
-      coments: 2,
+      comments: 2,
       likes: 100,
       disLikes: 0,
       views: 102,
-
       you: true,
-      folowing: true,
+      following: true,
       liked: false,
       disLiked: true,
     },

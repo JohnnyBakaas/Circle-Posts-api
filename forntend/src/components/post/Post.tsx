@@ -1,5 +1,4 @@
 import styles from "./Post.module.css";
-import folowerIcom from "./users-svgrepo-com.svg";
 
 const Post = ({ data }: { data: IPost }) => {
   return (
@@ -10,12 +9,10 @@ const Post = ({ data }: { data: IPost }) => {
 
       <div className={styles.bottom}>
         <CommentButton>
-          <p>{data.coments}</p>
+          <p>{data.comments}</p>
         </CommentButton>
 
-        <LikeButton>
-          <p>{data.likes}</p>
-        </LikeButton>
+        <LikeButton likes={data.likes} />
 
         <DisLikeButton>
           <p>{data.disLikes}</p>
@@ -56,7 +53,7 @@ const TopPart = ({ data }: { data: IPost }) => {
             stroke-linejoin="round"
           />
         </svg>
-        <p>{data.folowers}</p>
+        <p>{data.followers}</p>
       </div>
     </div>
   );
@@ -83,7 +80,7 @@ const CommentButton = (props: any) => {
   );
 };
 
-const LikeButton = (props: any) => {
+const LikeButton = ({ likes }: { likes: number }) => {
   return (
     <button className={styles.svgWrapper}>
       <svg
@@ -106,7 +103,7 @@ const LikeButton = (props: any) => {
           />
         </g>
       </svg>
-      {transformCount(props.children)}
+      <p>{transformCount(likes)}</p>
     </button>
   );
 };
@@ -160,7 +157,18 @@ const ViewsButton = (props: any) => {
 };
 
 const transformCount = (numb: number) => {
-  if (numb < 1000) return `${numb / 100}k`;
+  if (numb > 1000000) {
+    if ((numb / 1000000).toString()[1] == ".")
+      return `${(numb / 1000000).toFixed(2)}m`;
+    return `${(numb / 1000000).toFixed(1)}m`;
+  }
+
+  if (numb > 1000) {
+    if ((numb / 1000).toString()[1] == ".")
+      return `${(numb / 1000).toFixed(2)}k`;
+    return `${(numb / 1000).toFixed(1)}k`;
+  }
+
   return numb;
 };
 
@@ -170,15 +178,15 @@ export type IPost = {
   avatar: string;
   displayName: string;
   handle: string;
-  folowers: number;
+  followers: number;
   content: string;
-  coments: number;
+  comments: number;
   likes: number;
   disLikes: number;
   views: number;
 
   you: boolean;
-  folowing: boolean;
+  following: boolean;
   liked: boolean;
   disLiked: boolean;
 };

@@ -22,6 +22,12 @@ function App() {
 
   return (
     <div className={styles.site}>
+      <Header />
+      <main className={styles.ContentWrapper}>
+        <NavBar />
+        <RouterProvider router={router} />
+        <ComandBar />
+      </main>
       <button
         onClick={() => {
           setTheme(theme == "light" ? "dark" : "light");
@@ -29,12 +35,6 @@ function App() {
       >
         Endre farge
       </button>
-      <Header />
-      <main className={styles.ContentWrapper}>
-        <NavBar />
-        <RouterProvider router={router} />
-        <ComandBar />
-      </main>
     </div>
   );
 }

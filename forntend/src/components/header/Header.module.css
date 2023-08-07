@@ -1,9 +1,21 @@
 .header {
   margin-bottom: 40px;
   margin-top: 40px;
+  position: sticky;
+  top: 40px;
+  height: fit-content;
 }
 
 .header h1 {
   all: unset;
   font-size: 64px;
+  transition: font-size 0.05s linear;
+}
+
+.shrinkFont h1 {
+  font-size: 42px;
+}
+
+.animateFont {
+  font-size: 42px;
 }
