@@ -23,6 +23,7 @@
 * Dislikes
 * Views
 * Coments
+* NSFW - rust
 
 ##  Circles
 * Only you can see members
