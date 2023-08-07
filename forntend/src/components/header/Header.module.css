@@ -1,0 +1,9 @@
+.header {
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.header h1 {
+  all: unset;
+  font-size: 64px;
+}

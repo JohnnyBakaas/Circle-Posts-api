@@ -1,0 +1,87 @@
+.wrapper {
+  border-bottom: 1px solid var(--text-color);
+  margin-bottom: 100px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.left {
+  display: flex;
+}
+.userInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.avatar {
+  border-radius: 100%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.names {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper h3 {
+  all: unset;
+}
+
+.wrapper h4 {
+  all: unset;
+  font-size: 20px;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.wrapper p {
+  font-size: 20px;
+}
+
+.folower svg {
+  height: 18px;
+  width: 18px;
+  stroke: var(--text-color);
+}
+
+.svgWrapper svg {
+  border-radius: 0;
+  margin-right: 5px;
+  height: 18px;
+  width: 18px;
+  fill: var(--text-color);
+}
+
+.dislike {
+  transform: scaley(-1);
+}
+
+.svgWrapper {
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.svgWrapper:hover {
+  transform: scale(1.1);
+}
+
+.wrapper .contentP {
+  font-size: 32px;
+}
+
+.folower {
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 33px;
+}
