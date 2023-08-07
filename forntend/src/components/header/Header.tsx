@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Header.module.css";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [shrinkFont, setShrinkFont] = useState(false);
@@ -24,7 +25,9 @@ const Header = () => {
     <header
       className={`${styles.header} ${shrinkFont ? styles.shrinkFont : ""}`}
     >
-      <h1 className={`${shrinkFont ? styles.animateFont : ""}`}>Circles</h1>
+      <Link to={"/"}>
+        <h1 className={`${shrinkFont ? styles.animateFont : ""}`}>Circles</h1>
+      </Link>
     </header>
   );
 };

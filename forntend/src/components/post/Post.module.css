@@ -85,3 +85,7 @@
   cursor: pointer;
   padding-bottom: 33px;
 }
+
+.svgWrapper .filled {
+  fill: rgb(255, 0, 0);
+}

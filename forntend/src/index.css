@@ -27,3 +27,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+a {
+  all: unset;
+}
