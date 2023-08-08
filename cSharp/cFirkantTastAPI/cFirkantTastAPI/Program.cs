@@ -1,3 +1,11 @@
+using cFirkantTastAPI.Contracts;
+using cFirkantTastAPI.Controllers.Posts.v0___Puke;
+using cFirkantTastAPI.Controllers.User.v0___Puke;
+
+// Testing XDDDDD
+
+// Testing XDDDDD
+
 var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
@@ -16,6 +24,8 @@ if (builder.Environment.IsDevelopment())
 }
 
 // Add services to the container.
+builder.Services.AddSingleton<IPostsAPI, Posts>();
+builder.Services.AddSingleton<IUserAPI, UserAPI>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
