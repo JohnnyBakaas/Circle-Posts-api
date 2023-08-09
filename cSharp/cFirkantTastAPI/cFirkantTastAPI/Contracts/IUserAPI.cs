@@ -6,5 +6,6 @@ namespace cFirkantTastAPI.Contracts
     {
         Guid LoggInn(LoggInnInfo loggInnInfo);
         bool ValidateSessionToken(Guid sessionToken);
+        PublicUserInfo GetPublicUserInfo(string handle);
     }
 }

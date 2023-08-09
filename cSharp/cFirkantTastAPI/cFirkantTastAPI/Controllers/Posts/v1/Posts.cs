@@ -1,10 +1,8 @@
-﻿using cFirkantTastAPI.Contracts;
-using cFirkantTastAPI.Controllers.Posts.v0___Puke.Model;
-
-namespace cFirkantTastAPI.Controllers.Posts.v1
+﻿namespace cFirkantTastAPI.Controllers.Posts.v1
 {
-    public class Posts : IPostsAPI
+    public class Posts //: IPostsAPI
     {
+        /*
         public IPost[] GetGlobal(Guid sessionToken)
         {
             var posts = new IPost[2];
@@ -25,5 +23,6 @@ namespace cFirkantTastAPI.Controllers.Posts.v1
         {
             throw new NotImplementedException();
         }
+        */
     }
 }

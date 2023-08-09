@@ -1,5 +1,4 @@
-﻿using cFirkantTastAPI.Contracts;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace cFirkantTastAPI.Controllers.Posts.v1
 {
@@ -7,6 +6,7 @@ namespace cFirkantTastAPI.Controllers.Posts.v1
     [ApiController]
     public class PostsController : ControllerBase
     {
+        /*
         private IPostsAPI _postsAPI;
         public PostsController(IPostsAPI postsAPI)
         {
@@ -33,6 +33,7 @@ namespace cFirkantTastAPI.Controllers.Posts.v1
             if (circleID == null) { throw new ArgumentNullException(nameof(circleID)); }
             return _postsAPI.GetCircle(sessionToken, circleID);
         }
+         */
 
     }
 }

@@ -22,10 +22,18 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
             return _userAPI.LoggInn(loggInnInfo);
         }
 
-        [HttpPut("ValidateSessionToken-0")]
+        [HttpPut("ValidateSessionToken-v0")]
         public bool ValidateSessionToken([FromBody] Guid token)
         {
-            return false;
+            if (token == Guid.Empty) { throw new ArgumentNullException("token"); }
+            return _userAPI.ValidateSessionToken(token);
+        }
+
+        [HttpGet("GetPublicUserInfo-v0")]
+        public PublicUserInfo GetPublicUserInfo(string handle)
+        {
+            if (string.IsNullOrEmpty(handle)) { throw new ArgumentNullException("handle"); }
+            return _userAPI.GetPublicUserInfo(handle);
         }
     }
 }

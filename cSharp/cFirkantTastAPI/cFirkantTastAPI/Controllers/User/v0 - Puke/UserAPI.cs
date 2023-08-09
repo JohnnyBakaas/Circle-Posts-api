@@ -6,11 +6,60 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
 {
     public class UserAPI : IUserAPI
     {
+        public PublicUserInfo GetPublicUserInfo(string handle)
+        {
+            if (string.IsNullOrEmpty(handle))
+            {
+                return new PublicUserInfo();
+            }
+
+            string connStr = "server=localhost;user=root;database=circles;port=3306;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+
+            try
+            {
+                Console.WriteLine("Open");
+                conn.Open();
+
+                string sql = "SELECT Handle, DisplayName, Avatar, Followers, Description FROM user WHERE Handle = @Handle";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Handle", handle);
+
+                Console.WriteLine("Using greia");
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    Console.WriteLine("if?");
+                    if (reader.Read())
+                        Console.WriteLine("if JA");
+                    {
+                        return new PublicUserInfo
+                        {
+                            Handle = reader.GetString("Handle"),
+                            DisplayName = reader.GetString("DisplayName"),
+                            Avatar = reader.GetString("Avatar"),
+                            Description = reader.GetString("Description"),
+                            Followers = reader.GetInt32("Followers"),
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return new PublicUserInfo();
+        }
+
         public Guid LoggInn(LoggInnInfo loggInnInfo)
         {
             var userId = CheckLoggin(loggInnInfo);
             if (userId == Guid.Empty) { return Guid.Empty; }
-            return GetSesionToken(userId);
+            return GetSessionToken(userId);
         }
 
         public bool ValidateSessionToken(Guid sessionToken)
@@ -24,10 +73,9 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
             {
                 conn.Open();
 
-                string sql = "SELECT COUNT(*) FROM sesiontoken WHERE Token = @Token AND ManualDeactivated = false AND CreateDate > @ExpirationDate";
+                string sql = "SELECT COUNT(*) FROM sessiontoken WHERE Token = @Token AND ManualDeactivated = false AND ExpiredDate > NOW()";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@Token", sessionToken);
-                cmd.Parameters.AddWithValue("@ExpirationDate", DateTime.Now.AddMinutes(-1));
 
                 object result = cmd.ExecuteScalar();
                 return Convert.ToInt32(result) > 0;
@@ -42,7 +90,6 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
             }
 
             return false;
-
         }
 
         private Guid CheckLoggin(LoggInnInfo loggInnInfo)
@@ -84,11 +131,10 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
             return Guid.Empty;
         }
 
-        private Guid GetSesionToken(Guid userId)
+        private Guid GetSessionToken(Guid userId)
         {
-            var tokenValidTimeInMinuts = 1;
-
             if (userId == Guid.Empty) { return Guid.Empty; }
+
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);
 
@@ -96,10 +142,10 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
             {
                 conn.Open();
 
-                string sql = "SELECT Token FROM sesiontoken WHERE UserId = @UserId AND ManualDeactivated = false AND CreateDate > @ExpirationDate";
+                // Select the token that is not expired
+                string sql = "SELECT Token FROM sesiontoken WHERE UserId = @UserId AND ManualDeactivated = false AND ExpiredDate > NOW()";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@UserId", userId);
-                cmd.Parameters.AddWithValue("@ExpirationDate", DateTime.Now.AddMinutes(-tokenValidTimeInMinuts));
 
                 object result = cmd.ExecuteScalar();
                 if (result != null)
@@ -107,13 +153,16 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
                     return Guid.Parse(result.ToString());
                 }
 
-
                 Guid newToken = Guid.NewGuid();
-                sql = "INSERT INTO sesiontoken (UserId, Token, CreateDate, ManualDeactivated) VALUES (@UserId, @Token, @CreateDate, false)";
+
+                // Set the expiration time for the token (e.g. in 1 minute from now)
+                DateTime expirationDate = DateTime.Now.AddMinutes(60);
+
+                sql = "INSERT INTO sesiontoken (UserId, Token, ExpiredDate, ManualDeactivated) VALUES (@UserId, @Token, @ExpiredDate, false)";
                 cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 cmd.Parameters.AddWithValue("@Token", newToken);
-                cmd.Parameters.AddWithValue("@CreateDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@ExpiredDate", expirationDate);
 
                 cmd.ExecuteNonQuery();
 
