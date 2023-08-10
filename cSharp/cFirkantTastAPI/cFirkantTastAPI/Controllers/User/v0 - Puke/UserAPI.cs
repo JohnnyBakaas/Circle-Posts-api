@@ -73,7 +73,7 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
             {
                 conn.Open();
 
-                string sql = "SELECT COUNT(*) FROM sessiontoken WHERE Token = @Token AND ManualDeactivated = false AND ExpiredDate > NOW()";
+                string sql = "SELECT COUNT(*) FROM sesiontoken WHERE Token = @Token AND ManualDeactivated = false AND ExpiredDate > NOW()";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@Token", sessionToken);
 

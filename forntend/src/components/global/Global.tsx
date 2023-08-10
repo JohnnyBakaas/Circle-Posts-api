@@ -1,9 +1,8 @@
-import Post, { IPost } from "../post/Post";
-import styles from "./Posts.module.css";
+import Posts, { IPosts } from "../posts/Posts";
+import cSharpAPI from "../../api/axiosInstance";
 
-const Posts = ({ posts }: { posts: IPosts }) => {
-  /*
-  const posts: IPost[] = [
+const Global = () => {
+  const pretendoData: IPosts = [
     {
       avatar:
         "https://www.redwolf.in/image/catalog/stickers/woah-mama-sticker-india.jpg",
@@ -72,16 +71,12 @@ const Posts = ({ posts }: { posts: IPosts }) => {
       disLiked: false,
     },
   ];
-*/
-  return (
-    <div className={styles.wrapper}>
-      {posts.map((e, i) => (
-        <Post data={e} key={i} />
-      ))}
-    </div>
-  );
+
+  const getGlobalPosts = async () => {
+    //const response = await cSharpAPI.put();
+  };
+
+  return <Posts posts={pretendoData} />;
 };
 
-export type IPosts = IPost[];
-
-export default Posts;
+export default Global;

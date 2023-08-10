@@ -2,7 +2,7 @@
 {
     public class CreateNewPost
     {
-        public Guid OwnerId { get; set; }
+        public Guid SessionToken { get; set; }
         public string Content { get; set; }
         public bool IsGlobal { get; set; }
         public Guid? CircleId { get; set; }

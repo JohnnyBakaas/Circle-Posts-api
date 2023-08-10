@@ -131,6 +131,49 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
             return null; // Return null if no matching post was found
         }
 
+        public bool MakeNewPost(CreateNewPost data)
+        {
+            Console.WriteLine("Hallo???");
+            if (data == null || data.SessionToken == Guid.Empty || string.IsNullOrEmpty(data.Content))
+            {
+                return false; // Basic validation
+            }
+
+            // Validation for the session token might be performed here, if needed
+
+            string connStr = "server=localhost;user=root;database=circles;port=3306;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+
+            try
+            {
+                conn.Open();
+
+                // Assuming you want to insert SessionToken, Content, IsGlobal, and CircleId into the posts table
+                string sql = @"INSERT INTO posts (Owner, Content, IsGlobal, CircleId, Id) VALUES (@SessionToken, @Content, @IsGlobal, @CircleId, @Id)";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Owner", GetUserIdFromSessionToken(data.SessionToken));
+                cmd.Parameters.AddWithValue("@Content", data.Content);
+                cmd.Parameters.AddWithValue("@IsGlobal", data.IsGlobal);
+                cmd.Parameters.AddWithValue("@CircleId", data.CircleId ?? (object)DBNull.Value); // Inserting NULL if CircleId is not provided
+                cmd.Parameters.AddWithValue("@Id", Guid.NewGuid());
+
+                int result = cmd.ExecuteNonQuery();
+
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+
+
         private Guid GetUserIdFromSessionToken(Guid sessionToken)
         {
             string connStr = "server=localhost;user=root;database=circles;port=3306;";

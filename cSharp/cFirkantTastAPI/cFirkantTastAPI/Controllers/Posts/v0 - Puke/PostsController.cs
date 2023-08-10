@@ -14,39 +14,38 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
             _postsAPI = postsAPI;
         }
 
-        [HttpGet("global-v0")]
-        public IPost[] GetGlobal([FromHeader] Guid sessionToken)
+        [HttpPut("global-v0")]
+        public IPost[] GetGlobal([FromBody] Guid sessionToken)
         {
             return _postsAPI.GetGlobal(sessionToken);
         }
 
-        [HttpGet("friends-v0")]
-        public IPost[] GetFriens([FromHeader] Guid sessionToken)
+        [HttpPut("friends-v0")]
+        public IPost[] GetFriens([FromBody] Guid sessionToken)
         {
             if (sessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(sessionToken)); }
             return _postsAPI.GetFriens(sessionToken);
         }
 
-        [HttpGet("circle-v0")]
-        public IPost[] GetCircle([FromHeader] CircleIdAndSessionToken data)
+        [HttpPut("circle-v0")]
+        public IPost[] GetCircle([FromBody] CircleIdAndSessionToken data)
         {
             if (data.SessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(data.SessionToken)); }
             if (data.CircleId == null) { throw new ArgumentNullException(nameof(data.CircleId)); }
             return _postsAPI.GetCircle(data.SessionToken, data.CircleId);
         }
 
-        [HttpGet("post-v0")]
-        public IPost GetPost(Guid postId, [FromHeader] Guid sessionToken)
+        [HttpPut("post-v0")]
+        public IPost GetPost(Guid postId, [FromBody] Guid sessionToken)
         {
-            if (sessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(sessionToken)); }
-            if (postId == null) { throw new ArgumentNullException(nameof(postId)); }
+            if (postId == Guid.Empty) { throw new ArgumentNullException(nameof(postId)); }
             return _postsAPI.GetPost(sessionToken, postId);
         }
 
-        [HttpGet("MakeNewPost-v0")]
-        public bool MakeNewPost(CreateNewPost data)
+        [HttpPut("MakeNewPost-v0")]
+        public bool MakeNewPost([FromBody] CreateNewPost data)
         {
-            return false;
+            return _postsAPI.MakeNewPost(data);
         }
     }
 }

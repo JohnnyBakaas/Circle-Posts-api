@@ -9,5 +9,6 @@ namespace cFirkantTastAPI.Contracts
         IPost[] GetCircle(Guid sessionToken, string circleID);
         IPost GetPost(Guid sessionToken, Guid postId);
         bool MakeNewPost(CreateNewPost data);
+
     }
 }

@@ -6,14 +6,19 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root from "./routes/Root.tsx";
 import ErrorPage from "./routes/error-page.tsx";
-import Posts from "./components/posts/Posts.tsx";
+import LoggInn from "./routes/LoggInn.tsx";
+import Global from "./components/global/Global.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [{ path: "", element: <Posts /> }],
+    children: [{ path: "", element: <Global /> }],
+  },
+  {
+    path: "/LoggInn",
+    element: <LoggInn />,
   },
 ]);
 
