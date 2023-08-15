@@ -15,8 +15,8 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke.Model
         public int Views { get; set; }
         public bool You { get; set; }
         public bool Following { get; set; }
-        public bool Liking { get; set; }
-        public bool DisLikeing { get; set; }
+        public bool Liked { get; set; }
+        public bool DisLiked { get; set; }
         public Guid Id { get; set; }
     }
 }

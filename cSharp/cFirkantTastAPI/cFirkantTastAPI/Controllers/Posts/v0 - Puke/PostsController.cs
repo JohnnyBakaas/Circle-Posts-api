@@ -15,16 +15,16 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
         }
 
         [HttpPut("global-v0")]
-        public IPost[] GetGlobal([FromBody] Guid sessionToken)
+        public IPost[] GetGlobal([FromBody] SessionTokenRequest request)
         {
-            return _postsAPI.GetGlobal(sessionToken);
+            return _postsAPI.GetGlobal(request.sessionToken);
         }
 
         [HttpPut("friends-v0")]
-        public IPost[] GetFriens([FromBody] Guid sessionToken)
+        public IPost[] GetFriens([FromBody] SessionTokenRequest request)
         {
-            if (sessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(sessionToken)); }
-            return _postsAPI.GetFriens(sessionToken);
+            if (request.sessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(request.sessionToken)); }
+            return _postsAPI.GetFriens(request.sessionToken);
         }
 
         [HttpPut("circle-v0")]
@@ -36,10 +36,10 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
         }
 
         [HttpPut("post-v0")]
-        public IPost GetPost(Guid postId, [FromBody] Guid sessionToken)
+        public IPost GetPost(Guid postId, [FromBody] SessionTokenRequest request)
         {
             if (postId == Guid.Empty) { throw new ArgumentNullException(nameof(postId)); }
-            return _postsAPI.GetPost(sessionToken, postId);
+            return _postsAPI.GetPost(request.sessionToken, postId);
         }
 
         [HttpPut("MakeNewPost-v0")]

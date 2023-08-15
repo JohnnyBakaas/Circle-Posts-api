@@ -23,6 +23,11 @@ body {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  width: 100%;
+}
+
+#root {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,4 +35,5 @@ body {
 
 a {
   all: unset;
+  cursor: pointer;
 }

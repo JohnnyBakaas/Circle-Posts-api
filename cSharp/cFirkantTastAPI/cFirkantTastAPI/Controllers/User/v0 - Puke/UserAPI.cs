@@ -13,6 +13,8 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
                 return new PublicUserInfo();
             }
 
+            var user = new PublicUserInfo();
+
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);
 
@@ -32,7 +34,7 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
                     if (reader.Read())
                         Console.WriteLine("if JA");
                     {
-                        return new PublicUserInfo
+                        user = new PublicUserInfo
                         {
                             Handle = reader.GetString("Handle"),
                             DisplayName = reader.GetString("DisplayName"),
@@ -52,7 +54,7 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
                 conn.Close();
             }
 
-            return new PublicUserInfo();
+            return user;
         }
 
         public Guid LoggInn(LoggInnInfo loggInnInfo)
@@ -155,8 +157,7 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
 
                 Guid newToken = Guid.NewGuid();
 
-                // Set the expiration time for the token (e.g. in 1 minute from now)
-                DateTime expirationDate = DateTime.Now.AddMinutes(60);
+                DateTime expirationDate = DateTime.Now.AddMinutes(600); // Endrer hvor lenge token er aktiv
 
                 sql = "INSERT INTO sesiontoken (UserId, Token, ExpiredDate, ManualDeactivated) VALUES (@UserId, @Token, @ExpiredDate, false)";
                 cmd = new MySqlCommand(sql, conn);

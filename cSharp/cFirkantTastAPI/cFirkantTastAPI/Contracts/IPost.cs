@@ -14,8 +14,8 @@
 
         bool You { get; }
         bool Following { get; }
-        bool Liking { get; }
-        bool DisLikeing { get; }
+        bool Liked { get; }
+        bool DisLiked { get; }
 
         Guid Id { get; }
 

@@ -44,14 +44,14 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
                             Handle = reader["Handle"].ToString(),
                             Followers = Convert.ToInt32(reader["Followers"]),
                             Content = reader["Content"].ToString(),
-                            Comments = Convert.ToInt32(reader["Comments"]), // Reading the Comments column
+                            Comments = Convert.ToInt32(reader["Comments"]),
                             Likes = Convert.ToInt32(reader["Likes"]),
                             DisLikes = Convert.ToInt32(reader["DisLikes"]),
                             Views = Convert.ToInt32(reader["Views"]),
                             You = ownerId == userId,
                             Following = false,
-                            Liking = false,
-                            DisLikeing = false,
+                            Liked = false,
+                            DisLiked = false,
                         });
                     }
                 }
@@ -68,21 +68,152 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
             return posts.ToArray();
         }
 
-
-
         public IPost[] GetFriens(Guid sessionToken)
         {
+            if (sessionToken == Guid.Empty)
+            {
+                return null;
+            }
+
+            var userId = GetUserIdFromSessionToken(sessionToken);
+
+            if (userId == Guid.Empty) { return null; }
+
+            string connStr = "server=localhost;user=root;database=circles;port=3306;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+
+            List<IPost> posts = new List<IPost>();
+
+            try
+            {
+                conn.Open();
+
+                string sql = @"
+                    SELECT p.*, u.Avatar, u.DisplayName, u.Handle, u.Followers
+                    FROM posts p
+                    JOIN user u ON p.Owner = u.Id 
+                    JOIN friends f ON (u.Id = f.UserOneId OR u.Id = f.UserTwoId)
+                    WHERE (p.Owner = f.UserOneId OR p.Owner = f.UserTwoId) 
+                    AND (@UserId = f.UserOneId OR @UserId = f.UserTwoId) 
+                    AND p.Owner != @UserId";
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Guid ownerId = Guid.Parse(reader["Owner"].ToString());
+                        posts.Add(new Post
+                        {
+                            Id = Guid.Parse(reader["Id"].ToString()),
+                            Avatar = reader["Avatar"].ToString(),
+                            DisplayName = reader["DisplayName"].ToString(),
+                            Handle = reader["Handle"].ToString(),
+                            Followers = Convert.ToInt32(reader["Followers"]),
+                            Content = reader["Content"].ToString(),
+                            Comments = Convert.ToInt32(reader["Comments"]),
+                            Likes = Convert.ToInt32(reader["Likes"]),
+                            DisLikes = Convert.ToInt32(reader["DisLikes"]),
+                            Views = Convert.ToInt32(reader["Views"]),
+                            You = false,
+                            Following = true,
+                            Liked = false,
+                            DisLiked = false,
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return posts.ToArray();
+
+
             throw new NotImplementedException();
         }
 
-        public IPost[] GetCircle(Guid sessionToken, string circleID)
+        public IPost[] GetCircle(Guid sessionToken, Guid circleID)
         {
             throw new NotImplementedException();
+
+            if (sessionToken == Guid.Empty) { return null; }
+
+            var userId = GetUserIdFromSessionToken(sessionToken);
+
+            if (userId == Guid.Empty) { return null; }
+
+            string connStr = "server=localhost;user=root;database=circles;port=3306;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            List<IPost> posts = new List<IPost>();
+
+            try
+            {
+                conn.Open();
+
+                string sql = @"
+                    SELECT p.*, u.Avatar, u.DisplayName, u.Handle, u.Followers
+                    FROM posts p
+                    JOIN user u ON p.Owner = u.Id 
+                    JOIN friends f ON (u.Id = f.UserOneId OR u.Id = f.UserTwoId)
+                    WHERE (p.Owner = f.UserOneId OR p.Owner = f.UserTwoId) 
+                    AND (@UserId = f.UserOneId OR @UserId = f.UserTwoId) 
+                    AND p.Owner != @UserId";
+
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Guid ownerId = Guid.Parse(reader["Owner"].ToString());
+                        posts.Add(new Post
+                        {
+                            Id = Guid.Parse(reader["Id"].ToString()),
+                            Avatar = reader["Avatar"].ToString(),
+                            DisplayName = reader["DisplayName"].ToString(),
+                            Handle = reader["Handle"].ToString(),
+                            Followers = Convert.ToInt32(reader["Followers"]),
+                            Content = reader["Content"].ToString(),
+                            Comments = Convert.ToInt32(reader["Comments"]),
+                            Likes = Convert.ToInt32(reader["Likes"]),
+                            DisLikes = Convert.ToInt32(reader["DisLikes"]),
+                            Views = Convert.ToInt32(reader["Views"]),
+                            You = ownerId == null,
+                            Following = false,
+                            Liked = false,
+                            DisLiked = false,
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return posts.ToArray();
         }
 
         public IPost GetPost(Guid sessionToken, Guid postId)
         {
-            Guid userId = GetUserIdFromSessionToken(sessionToken);
+            Post res = null;
+            Guid userId = Guid.Empty;
+            if (sessionToken != Guid.Empty)
+            {
+                userId = GetUserIdFromSessionToken(sessionToken);
+            }
 
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -100,7 +231,7 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
                 {
                     if (reader.Read())
                     {
-                        return new Post
+                        res = new Post
                         {
                             Id = reader.GetGuid("Id"),
                             Avatar = reader.GetString("Avatar"),
@@ -113,8 +244,8 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
                             Views = reader.GetInt32("Views"),
                             You = reader.GetGuid("Owner") == userId,
                             Following = false,
-                            Liking = false,
-                            DisLikeing = false
+                            Liked = false,
+                            DisLiked = false
                         };
                     }
                 }
@@ -128,18 +259,22 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
                 conn.Close();
             }
 
-            return null; // Return null if no matching post was found
+
+            return res;
         }
 
         public bool MakeNewPost(CreateNewPost data)
         {
+            var res = false;
             Console.WriteLine("Hallo???");
             if (data == null || data.SessionToken == Guid.Empty || string.IsNullOrEmpty(data.Content))
             {
-                return false; // Basic validation
+                return false;
             }
 
-            // Validation for the session token might be performed here, if needed
+            var userId = GetUserIdFromSessionToken(data.SessionToken);
+
+            if (userId == Guid.Empty) { return false; }
 
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -148,51 +283,53 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
             {
                 conn.Open();
 
-                // Assuming you want to insert SessionToken, Content, IsGlobal, and CircleId into the posts table
-                string sql = @"INSERT INTO posts (Owner, Content, IsGlobal, CircleId, Id) VALUES (@SessionToken, @Content, @IsGlobal, @CircleId, @Id)";
+                string sql = @"INSERT INTO posts (Owner, Content, IsGlobal, CircleId, Id) VALUES (@Owner, @Content, @IsGlobal, @CircleId, @Id)";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@Owner", GetUserIdFromSessionToken(data.SessionToken));
+                cmd.Parameters.AddWithValue("@Owner", userId);
                 cmd.Parameters.AddWithValue("@Content", data.Content);
                 cmd.Parameters.AddWithValue("@IsGlobal", data.IsGlobal);
-                cmd.Parameters.AddWithValue("@CircleId", data.CircleId ?? (object)DBNull.Value); // Inserting NULL if CircleId is not provided
+                cmd.Parameters.AddWithValue("@CircleId", data.CircleId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@Id", Guid.NewGuid());
 
                 int result = cmd.ExecuteNonQuery();
 
-                return result > 0;
+                res = result > 0;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return false;
+                res = false;
             }
             finally
             {
                 conn.Close();
             }
+
+            return res;
         }
 
 
 
         private Guid GetUserIdFromSessionToken(Guid sessionToken)
         {
+            var res = Guid.Empty;
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);
 
             try
             {
                 conn.Open();
-
-                // Use the ExpiredDate column to check if the token is still valid.
                 string sql = "SELECT UserId FROM sesiontoken WHERE Token = @SessionToken AND ManualDeactivated = false AND ExpiredDate > NOW()";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@SessionToken", sessionToken);
 
                 object result = cmd.ExecuteScalar();
+
                 if (result != null)
                 {
-                    return Guid.Parse(result.ToString());
+                    res = Guid.Parse(result.ToString());
                 }
+
             }
             catch (Exception ex)
             {
@@ -203,19 +340,9 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
                 conn.Close();
             }
 
-            throw new UnauthorizedAccessException("Invalid or expired session token");
+            return res;
         }
 
 
     }
 }
-
-/*
-Id
-Owner
-Likes
-DisLikes
-Views
-Content
-IsGlobal
-*/

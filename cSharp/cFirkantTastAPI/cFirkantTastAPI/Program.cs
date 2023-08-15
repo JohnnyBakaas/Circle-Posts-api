@@ -1,4 +1,5 @@
 using cFirkantTastAPI.Contracts;
+using cFirkantTastAPI.Controllers.Circles.v0___Puke;
 using cFirkantTastAPI.Controllers.Posts.v0___Puke;
 using cFirkantTastAPI.Controllers.User.v0___Puke;
 
@@ -26,6 +27,7 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddSingleton<IPostsAPI, Posts>();
 builder.Services.AddSingleton<IUserAPI, UserAPI>();
+builder.Services.AddSingleton<ICirclesAPI, CirclesAPI>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

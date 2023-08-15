@@ -1,4 +1,5 @@
 ﻿using cFirkantTastAPI.Contracts;
+using cFirkantTastAPI.Controllers.Posts.v0___Puke.Model;
 using cFirkantTastAPI.Controllers.User.v0___Puke.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,10 +24,10 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
         }
 
         [HttpPut("ValidateSessionToken-v0")]
-        public bool ValidateSessionToken([FromBody] Guid token)
+        public bool ValidateSessionToken([FromBody] SessionTokenRequest request)
         {
-            if (token == Guid.Empty) { throw new ArgumentNullException("token"); }
-            return _userAPI.ValidateSessionToken(token);
+            if (request.sessionToken == Guid.Empty) { throw new ArgumentNullException("token"); }
+            return _userAPI.ValidateSessionToken(request.sessionToken);
         }
 
         [HttpGet("GetPublicUserInfo-v0")]

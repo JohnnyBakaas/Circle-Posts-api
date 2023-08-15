@@ -32,7 +32,7 @@ const TopPart = ({ data }: { data: IPost }) => {
         />
         <div className={styles.names}>
           <h3>{data.displayName}</h3>
-          <h4>{data.handle}</h4>
+          <h4>{data.you ? "You" : data.handle}</h4>
         </div>
       </div>
       <div className={`${styles.folower}`}>
