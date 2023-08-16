@@ -6,5 +6,6 @@ namespace cFirkantTastAPI.Contracts
     {
         bool MakeNewCircles(MakeNewCirclesData data);
         CircleNameAndId[] GetAllCirles(Guid sessinoToken);
+        bool AddUsersToCircle(Guid circleId, string[] handles);
     }
 }

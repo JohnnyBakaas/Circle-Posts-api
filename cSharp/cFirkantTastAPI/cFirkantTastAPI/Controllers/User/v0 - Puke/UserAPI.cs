@@ -10,10 +10,10 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
         {
             if (string.IsNullOrEmpty(handle))
             {
-                return new PublicUserInfo();
+                return null;
             }
 
-            var user = new PublicUserInfo();
+            PublicUserInfo user = null;
 
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);

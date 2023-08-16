@@ -33,5 +33,11 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
 
             return _circlesControllerAPI.MakeNewCircles(data);
         }
+
+        [HttpPost("AddUsersToCircle-v0")]
+        public bool AddUsersToCircle([FromBody] AddUsersToCircleData data)
+        {
+            return _circlesControllerAPI.AddUsersToCircle(data.circleId, data.handles);
+        }
     }
 }

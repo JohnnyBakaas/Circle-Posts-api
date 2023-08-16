@@ -10,6 +10,11 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
         {
             var userId = GetUserIdFromSessionToken(sessinoToken);
 
+            if (userId == Guid.Empty)
+            {
+                return new CircleNameAndId[0];
+            }
+
             var circles = new List<CircleNameAndId>();
 
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
@@ -26,7 +31,7 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         circles.Add(new CircleNameAndId
                         {
@@ -47,7 +52,7 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
 
             return circles.ToArray();
 
-            return new CircleNameAndId[0];
+
         }
 
         public bool MakeNewCircles(MakeNewCirclesData data)
@@ -57,13 +62,12 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
             if (string.IsNullOrEmpty(data.Name)) { return false; }
             if (data.SessionToken == Guid.Empty) { return false; }
 
-            if (data.Handles != null) { throw new NotImplementedException(); }
-
             var userId = GetUserIdFromSessionToken(data.SessionToken);
 
             if (userId == Guid.Empty) { return false; }
 
             var res = false;
+            var circleId = Guid.NewGuid();
 
             string connStr = "server=localhost;user=root;database=circles;port=3306;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -76,7 +80,7 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@OwnerId", userId);
                 cmd.Parameters.AddWithValue("@Name", data.Name);
-                cmd.Parameters.AddWithValue("@Id", Guid.NewGuid());
+                cmd.Parameters.AddWithValue("@Id", circleId);
 
                 cmd.ExecuteNonQuery();
 
@@ -92,15 +96,25 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
                 conn.Close();
             }
 
-            // TODO: Legg til AddUsersToCircle
+
+            if (data.Handles == null || data.Handles.Length == 0) { return res; }
+
+            AddUsersToCircle(circleId, data.Handles);
 
             return res;
 
         }
 
-        private bool AddUsersToCircle()
+        public bool AddUsersToCircle(Guid circleId, string[] handles)
         {
-            return false;
+            var res = true;
+            for (int i = 0; i < handles.Length; i++)
+            {
+                var userId = GetUserIdFromHandle(handles[i]);
+                if (!AddUserToCircle(circleId, userId)) { res = false; };
+            }
+
+            return res;
         }
 
         private Guid GetUserIdFromSessionToken(Guid sessionToken)
@@ -136,5 +150,73 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
             return restult;
         }
 
+        private Guid GetUserIdFromHandle(string handle)
+        {
+            var restult = Guid.Empty;
+            string connStr = "server=localhost;user=root;database=circles;port=3306;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+
+            try
+            {
+                conn.Open();
+                string sql = "SELECT Id FROM user WHERE Handle = @Handle";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Handle", handle);
+
+                object result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    restult = Guid.Parse(result.ToString());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return restult;
+
+        }
+
+        private bool AddUserToCircle(Guid circleId, Guid userId)
+        {
+            if (userId == Guid.Empty) { return false; }
+            bool res = false;
+
+            string connStr = "server=localhost;user=root;database=circles;port=3306;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+
+            try
+            {
+                conn.Open();
+
+                string sql = @"INSERT INTO circleconnection (CircleId, UserId, Id) VALUES (@CircleId, @UserId, @Id)";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@CircleId", circleId);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@Id", Guid.NewGuid());
+
+                cmd.ExecuteNonQuery();
+
+                res = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                res = false;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return res;
+        }
     }
 }

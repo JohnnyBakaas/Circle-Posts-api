@@ -19,21 +19,21 @@ namespace cFirkantTastAPI.Controllers.User.v0___Puke
         [HttpPost("LoggInn-v0")]
         public Guid LoggInn([FromBody] LoggInnInfo loggInnInfo)
         {
-            if (loggInnInfo == null) { throw new ArgumentNullException("username"); }
+            if (loggInnInfo == null) { return Guid.Empty; }
             return _userAPI.LoggInn(loggInnInfo);
         }
 
         [HttpPut("ValidateSessionToken-v0")]
         public bool ValidateSessionToken([FromBody] SessionTokenRequest request)
         {
-            if (request.sessionToken == Guid.Empty) { throw new ArgumentNullException("token"); }
+            if (request.sessionToken == Guid.Empty) { return false; }
             return _userAPI.ValidateSessionToken(request.sessionToken);
         }
 
         [HttpGet("GetPublicUserInfo-v0")]
         public PublicUserInfo GetPublicUserInfo(string handle)
         {
-            if (string.IsNullOrEmpty(handle)) { throw new ArgumentNullException("handle"); }
+            if (string.IsNullOrEmpty(handle)) { return null; }
             return _userAPI.GetPublicUserInfo(handle);
         }
     }

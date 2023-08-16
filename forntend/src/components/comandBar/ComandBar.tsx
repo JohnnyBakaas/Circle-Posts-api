@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import cSharpAPI from "../../api/axiosInstance";
 
 const ComandBar = () => {
-  const [circles, setCircles] = useState([
-    { name: "ASDFASDfads", id: "6b29fc40-ca47-1067-b31d-00dd010662da" },
-  ]);
+  const [circles, setCircles] = useState<circleData[]>([]);
 
   const GetAllCircles = async () => {
     try {
@@ -46,3 +44,8 @@ const ComandBar = () => {
 };
 
 export default ComandBar;
+
+type circleData = {
+  name: string;
+  id: string;
+};
