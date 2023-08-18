@@ -23,22 +23,22 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
         [HttpPut("friends-v0")]
         public IPost[] GetFriens([FromBody] SessionTokenRequest request)
         {
-            if (request.sessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(request.sessionToken)); }
+            if (request.sessionToken == Guid.Empty) { return null; }
             return _postsAPI.GetFriens(request.sessionToken);
         }
 
         [HttpPut("circle-v0")]
         public IPost[] GetCircle([FromBody] CircleIdAndSessionToken data)
         {
-            if (data.SessionToken == Guid.Empty) { throw new ArgumentNullException(nameof(data.SessionToken)); }
-            if (data.CircleId == null) { throw new ArgumentNullException(nameof(data.CircleId)); }
+            if (data.SessionToken == Guid.Empty) { return null; }
+            if (data.CircleId == null) { return null; }
             return _postsAPI.GetCircle(data.SessionToken, data.CircleId);
         }
 
         [HttpPut("post-v0")]
         public IPost GetPost(Guid postId, [FromBody] SessionTokenRequest request)
         {
-            if (postId == Guid.Empty) { throw new ArgumentNullException(nameof(postId)); }
+            if (postId == Guid.Empty) { return null; }
             return _postsAPI.GetPost(request.sessionToken, postId);
         }
 

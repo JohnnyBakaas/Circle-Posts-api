@@ -26,7 +26,7 @@ namespace cFirkantTastAPI.Controllers.Circles.v0___Puke
         {
             if (data.Handles != null)
             {
-                throw new NotImplementedException();
+                return false;
             }
             if (data.SessionToken == Guid.Empty) { return false; }
             if (data.Name == string.Empty) { return false; }
