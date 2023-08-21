@@ -466,7 +466,7 @@ namespace cFirkantTastAPI.Controllers.Posts.v0___Puke
                     WHERE UserId = @UserId";
 
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@UserId", userId.ToString());
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
