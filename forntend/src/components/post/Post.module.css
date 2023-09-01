@@ -29,11 +29,6 @@
   all: unset;
 }
 
-.wrapper h4 {
-  all: unset;
-  font-size: 20px;
-}
-
 .bottom {
   display: flex;
   justify-content: space-between;

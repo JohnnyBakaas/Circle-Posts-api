@@ -11,6 +11,7 @@ import Global from "./components/global/Global.tsx";
 import Friends from "./components/friends/friends.tsx";
 import Circle from "./components/circle/Circle.tsx";
 import NewCircle from "./components/newCircle/NewCircle.tsx";
+import MessageContainter from "./components/messageContainter/MessageContainter.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "/friends", element: <Friends /> },
       { path: "/circle/:circleId", element: <Circle /> },
       { path: "/newCircle", element: <NewCircle /> },
+      { path: "/message", element: <MessageContainter /> },
     ],
   },
   {

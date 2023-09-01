@@ -1,0 +1,130 @@
+.wrapper {
+  width: 700px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-left: 20px;
+  height: calc(100vh - 266px);
+}
+
+.friends {
+  min-width: 300px;
+  overflow-y: scroll;
+}
+
+.friends::-webkit-scrollbar {
+  display: none;
+}
+
+.friends::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.friends h6 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 0.5em;
+}
+
+.friends span {
+  margin-left: 10px;
+}
+
+.friends div {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--text-color);
+}
+.friends .displayMoreThenAvatar {
+}
+
+.friends div:last-child {
+  border: 0;
+}
+
+.friends .avatar {
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.friends p {
+  font-size: 15px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  border-left: 1px solid var(--text-color);
+  margin-left: 30px;
+  padding-left: 30px;
+  padding-right: 10px;
+  overflow-y: scroll;
+}
+
+.messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: var(--text-color);
+}
+
+.notYou,
+.isYou {
+  display: flex;
+  flex-direction: column;
+}
+
+.notYou {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.isYou {
+  text-align: right;
+  align-items: flex-end;
+}
+
+input,
+.notYou p,
+.isYou p {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.notYou p {
+  background-color: var(--message-color-other);
+}
+
+.isYou p {
+  background-color: var(--message-color-me);
+}
+
+.messageSenderWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.messageSenderWrapper button {
+  font-size: 32px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+.messageSenderWrapper input {
+  font-size: 32px;
+  width: 100%;
+  margin: 0;
+  background-color: var(--text-color);
+  color: var(--background-color);
+}

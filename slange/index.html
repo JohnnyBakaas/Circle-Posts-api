@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Echo</title>
+    <script type="text/javascript">
+      var socket = new WebSocket("ws://" + window.location.host + "/echo");
+
+      socket.onopen = function () {
+        console.log("WebSocket connection established.");
+      };
+
+      socket.onmessage = function (event) {
+        console.log("Received message:", event.data);
+        // Handle received message here, e.g., update UI
+      };
+
+      function sendMessage() {
+        var message = document.getElementById("message").value;
+        socket.send(message);
+      }
+    </script>
+  </head>
+  <body>
+    <input type="text" id="message" placeholder="Enter message" />
+    <button onclick="sendMessage()">Send</button>
+  </body>
+</html>

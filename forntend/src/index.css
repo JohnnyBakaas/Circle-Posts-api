@@ -3,11 +3,19 @@
 :root.light-theme {
   --background-color: #fefefe;
   --text-color: #000000;
+  --message-color-other: rgb(210, 208, 208);
+  --message-color-me: rgb(230, 230, 230);
 }
 
 :root.dark-theme {
   --background-color: #1b1b1b;
   --text-color: #ffffff;
+  --message-color-other: rgb(54, 54, 54);
+  --message-color-me: rgb(110, 110, 110);
+}
+
+:root {
+  --aside-min-with: 200px;
 }
 
 * {
@@ -36,4 +44,9 @@ body {
 a {
   all: unset;
   cursor: pointer;
+}
+
+h4 {
+  all: unset;
+  font-size: 20px;
 }

@@ -1,0 +1,18 @@
+Leverings klasse:
+You:            bool
+message:        string
+
+Inn informasjon:
+sessiontoken:   string
+handle:         string
+
+DB data:
+time:           dateTime
+contetn:        string
+friend id:      guid
+message id:     guid
+
+Endpoints:
+StartWebSocket(sessiontoken)
+
+
