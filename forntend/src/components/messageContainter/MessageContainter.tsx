@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./MessageContainter.module.css";
-
-type MessageContainterProps = {};
 
 const MessageContainter = () => {
   const [avatarOnly, setAvatarOnly] = useState(true);
